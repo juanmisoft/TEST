@@ -10,6 +10,14 @@ const EXAM_DURATION = 6000;      // 100 minutos en segundos
 
 // Inicialización
 document.addEventListener("DOMContentLoaded", () => {
+    // Cargar preferencia de tema guardada
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+        document.body.classList.add("light-theme");
+        const btn = document.getElementById("theme-toggle-btn");
+        if (btn) btn.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+
     // 1. Cargar preguntas de la base de datos
     if (typeof questionsData !== "undefined" && Array.isArray(questionsData)) {
         questionsPool = questionsData;
@@ -66,6 +74,19 @@ function setupEventListeners() {
         closeResultsModal();
         generateNewTest();
     });
+
+    // Botón de alternar tema claro / oscuro
+    const themeBtn = document.getElementById("theme-toggle-btn");
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            const isLight = document.body.classList.toggle("light-theme");
+            localStorage.setItem("theme", isLight ? "light" : "dark");
+            
+            // Cambiar icono
+            themeBtn.innerHTML = isLight ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            showToast(isLight ? "Tema Claro activado" : "Tema Oscuro activado", "info");
+        });
+    }
 }
 
 // Cambiar el modo de simulación
