@@ -1,2 +1,267 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Test TSI Final 100</title><style>body{font-family:Arial,sans-serif;margin:0;background:#f7f5ef;color:#1f1f1f}.wrap{max-width:1200px;margin:0 auto;padding:24px}.panel{background:#fff;border:1px solid #e6ddcb;border-radius:18px;padding:24px;box-shadow:0 6px 24px rgba(0,0,0,.05)}.controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}button{border:0;border-radius:14px;padding:14px 18px;font-size:16px;cursor:pointer}.primary{background:#0f7780;color:#fff}.secondary{background:#ece7dd}.q{padding:18px;border:1px solid #ece1cd;border-radius:18px;margin:14px 0}.opt{display:flex;gap:14px;align-items:center;padding:12px 14px;border:1px solid #eee;border-radius:14px;margin:10px 0;cursor:pointer}.b{width:40px;height:40px;border-radius:50%;background:#f3efe7;display:flex;align-items:center;justify-content:center;font-weight:700}.meta{color:#666;font-size:14px;margin-bottom:10px}#status{margin:10px 0;color:#116f7a;font-weight:700}#score{margin:10px 0;color:#444}.correct{background:#e8f7ee;border-color:#bfe6cd}.wrong{background:#fdecec;border-color:#f3c3c3}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}</style></head><body><div class="wrap"><div class="panel"><div class="controls"><button class="primary" id="generate">Generar test</button><button class="secondary" id="prev">Anterior</button><button class="secondary" id="blank">Dejar en blanco</button><button class="primary" id="next">Siguiente</button></div><div class="topline"><div id="status">Pulsa “Generar test”.</div><div id="score"></div></div><div id="content"></div></div></div><script>const generalPool=[["¿La Constitución Española reconoce el derecho a la protección de la salud?",["Verdadero", "Falso", "Solo en menores", "Solo en empleo público"],"A","CE","general"],["¿La justicia será gratuita cuando así lo disponga la ley y, en todo caso, respecto de quienes acrediten insuficiencia de recursos para litigar?",["Falso", "Solo en delitos leves", "Solo en la AGE", "Verdadero"],"D","CE","general"],["¿La Ley 39/2015 regula el procedimiento administrativo común?",["Solo organización administrativa", "Solo transparencia", "Verdadero", "Falso"],"C","Ley 39/2015","general"],["¿La Ley 40/2015 regula el régimen jurídico del sector público?",["Solo contratación pública", "Verdadero", "Falso", "Solo empleo público"],"B","Ley 40/2015","general"],["¿El acceso al empleo público se rige por igualdad, mérito y capacidad?",["Verdadero", "Falso", "Solo igualdad y antigüedad", "Solo mérito"],"A","EBEP","general"],["¿La Ley 19/2013 regula transparencia, acceso a la información pública y buen gobierno?",["Falso", "Solo reutilización", "Solo firma electrónica", "Verdadero"],"D","Ley 19/2013","general"],["¿La Ley 37/2007 regula la reutilización de la información del sector público?",["Solo archivo electrónico", "Solo accesibilidad", "Verdadero", "Falso"],"C","Ley 37/2007","general"],["¿Los documentos electrónicos deben conservarse garantizando autenticidad, integridad y conservación?",["Solo integridad", "Verdadero", "Falso", "Solo autenticidad"],"B","Ley 39/2015","general"],["¿La información publicada en el Portal de Transparencia debe ser accesible, interoperable y reutilizable?",["Verdadero", "Falso", "Solo accesible", "Solo interoperable"],"A","Ley 19/2013","general"],["¿Los contratos mixtos contienen prestaciones correspondientes a otra u otras de distinta clase?",["Falso", "Solo si hay lotes", "Solo en menores", "Verdadero"],"D","LCSP","general"],["¿Los plazos por días se entienden hábiles salvo disposición en contrario?",["Naturales siempre", "Solo laborables locales", "Verdadero", "Falso"],"C","Ley 39/2015","general"],["¿La Ley Orgánica 3/2007 es la ley para la igualdad efectiva de mujeres y hombres?",["Ley 40/2015", "Verdadero", "Falso", "Ley 3/2018"],"B","LO 3/2007","general"],["¿La Ley 39/2015 regula la capacidad de obrar ante las Administraciones Públicas?",["Verdadero", "Falso", "Solo personas jurídicas", "Solo mayores de edad"],"A","Ley 39/2015","general"],["¿Las Administraciones Públicas se relacionarán entre sí y con sus órganos por medios electrónicos?",["Falso", "Solo por papel", "Solo si lo pide el interesado", "Verdadero"],"D","Ley 40/2015","general"],["¿La ley limita el uso de la informática para garantizar el honor y la intimidad personal y familiar?",["Solo secreto profesional", "Solo acceso a datos", "Verdadero", "Falso"],"C","CE","general"],["¿El IV Plan de Gobierno Abierto incluye objetivos de sensibilización y formación?",["Solo archivo", "Verdadero", "Falso", "Solo contratación"],"B","Gobierno Abierto","general"],["¿El artículo 119 de la Constitución Española regula la justicia gratuita?",["Verdadero", "Falso", "Artículo 18", "Artículo 103"],"A","CE","general"],["¿La información del Portal de Transparencia debe adecuarse a accesibilidad, interoperabilidad y reutilización?",["Falso", "Solo transparencia", "Solo reutilización", "Verdadero"],"D","Ley 19/2013","general"],["¿La Ley 40/2015 dedica el capítulo V al funcionamiento electrónico del sector público?",["A contratación pública", "A responsabilidad patrimonial", "Verdadero", "Falso"],"C","Ley 40/2015","general"],["¿La Ley 19/2013 regula la transparencia y el buen gobierno?",["Solo la administración local", "Verdadero", "Falso", "Solo el acceso a datos privados"],"B","Ley 19/2013","general"],["¿La Ley 39/2015 regula los sistemas de firma admitidos por las Administraciones Públicas?",["Verdadero", "Falso", "Solo el DNIe", "Solo sellos de tiempo"],"A","Ley 39/2015","general"],["¿La ley de empleo busca la adecuación de oferta y demanda de empleo?",["Falso", "Solo el empleo público", "Solo la formación", "Verdadero"],"D","Ley 3/2023","general"],["¿La Constitución Española reconoce el derecho a la protección de datos frente al uso de la informática?",["Solo el secreto de las comunicaciones", "Solo la intimidad", "Verdadero", "Falso"],"C","CE","general"],["¿La información pública publicada debe poder reutilizarse?",["Solo imprimirse", "Verdadero", "Falso", "Solo consultarse"],"B","Ley 19/2013","general"],["¿La Ley 39/2015 regula la administración electrónica en procedimientos comunes?",["Verdadero", "Falso", "Solo la organización territorial", "Solo la hacienda pública"],"A","Ley 39/2015","general"],["¿Los documentos electrónicos deben conservarse en formato que permita autenticidad e integridad?",["Falso", "Solo en PDF", "Solo en XML", "Verdadero"],"D","Ley 39/2015","general"],["¿La reutilización de la información del sector público se regula por la Ley 37/2007?",["Ley 19/2013", "Ley 40/2015", "Verdadero", "Falso"],"C","Ley 37/2007","general"],["¿La transparencia activa se vincula con el acceso y reutilización de la información pública?",["Solo la intimidad", "Verdadero", "Falso", "Solo la contratación pública"],"B","Ley 19/2013","general"],["¿La administración electrónica exige interoperabilidad y seguridad?",["Verdadero", "Falso", "Solo rapidez", "Solo disponibilidad"],"A","Ley 40/2015","general"],["¿La Constitución Española establece que la ley limitará el uso de la informática para garantizar el honor y la intimidad?",["Falso", "Solo secreto profesional", "Solo acceso a datos", "Verdadero"],"D","CE","general"]];const specificPool=[["En bases de datos, el lenguaje para definir tablas y vistas es...",["DCL", "TCL", "DDL", "DML"],"C","BD","specific"],["Una relación muchos a muchos se implementa con...",["Trigger", "Tabla intermedia", "Índice único", "Vista materializada"],"B","BD","specific"],["El patrón Singleton permite...",["Una única instancia y acceso global", "Crear objetos complejos", "Definir familias de algoritmos", "Separar vista y modelo"],"A","Patrones","specific"],["HTTPS se ubica en la capa...",["Transporte", "Red", "Enlace", "Aplicación"],"D","OSI","specific"],["AAA significa...",["Authentication, Access, Audit", "Authorization, Access, Accounting", "Authentication, Authorization, Accounting", "Access, Audit, Allocation"],"C","Seguridad","specific"],["IPv6 se compone de...",["Dos grupos hexadecimales", "Ocho grupos de cuatro hexadecimales", "Cuatro grupos decimales", "Seis grupos binarios"],"B","IPv6","specific"],["En Kanban, la tarjeta representa...",["Una tarea o ítem de trabajo", "Un rol", "Un sprint", "Una reunión"],"A","Kanban","specific"],["El motor de renderizado de Safari es...",["Blink", "Gecko", "Trident", "WebKit"],"D","Web","specific"],["SNMP MIB sirve para...",["Asignar IP", "Balancear carga", "Organizar parámetros de gestión", "Cifrar tráfico"],"C","SNMP","specific"],["RTO significa...",["Tiempo máximo tolerable de inactividad", "Tiempo objetivo de recuperación", "Punto objetivo de recuperación", "Nivel operativo revisado"],"B","Continuidad","specific"],["RPO significa...",["Punto objetivo de recuperación", "Tiempo objetivo de recuperación", "Nivel de servicio mínimo", "Tiempo de parada máximo"],"A","Continuidad","specific"],["El comando SQL para eliminar el contenido de una tabla sin borrar su estructura es...",["DROP", "DELETE TABLE", "ERASE", "TRUNCATE"],"D","SQL","specific"],["En una API REST, el principio sin estado significa que...",["Se usa solo XML", "No hay recursos", "Cada petición contiene la información necesaria", "El servidor guarda todo el contexto"],"C","REST","specific"],["Docker persiste datos mediante...",["Caché RAM", "Volúmenes", "Snapshots", "NAS obligatoria"],"B","Docker","specific"],["En UML, un diagrama de secuencia es un diagrama de...",["Interacción", "Estructura", "Despliegue", "Clases"],"A","UML","specific"],["En Scrum, Planning Poker se usa para...",["Ejecutar despliegues", "Repartir turnos", "Priorizar bugs automáticamente", "Estimación por consenso"],"D","Scrum","specific"],["La memoria virtual permite...",["Evitar el disco", "Sustituir la CPU", "Ejecutar programas mayores que la memoria física disponible", "Aumentar la RAM física"],"C","SO","specific"],["El nivel de aislamiento Read Committed evita...",["Bloqueos exclusivos", "Lecturas sucias", "Lecturas fantasma", "Lecturas no repetibles"],"B","BD","specific"],["La ley de Shannon-Hartley relaciona capacidad máxima con...",["Ancho de banda y relación señal-ruido", "Frecuencia y latencia", "Potencia y jitter", "Errores y redundancia"],"A","Teleco","specific"],["El estándar IEEE 802.1ad se relaciona con...",["Wi-Fi corporativa", "Ethernet sobre fibra", "Control de acceso", "VLAN stacking Q-in-Q"],"D","Redes","specific"],["El prefijo link-local IPv6 es...",["FF00", "2001", "FE80", "FC00"],"C","IPv6","specific"],["En DNS, un registro MX sirve para...",["Definir alias de servicio", "Definir servidores de correo", "Asignar IP a un host", "Traducir nombres a IPv6"],"B","Redes","specific"],["El protocolo DHCPDISCOVER se usa para...",["Buscar servidores DHCP en difusión", "Entregar la dirección final", "Renovar la concesión", "Liberar la dirección"],"A","Redes","specific"],["La capa de aplicación del modelo OSI incluye...",["ARP y MAC", "IP y ICMP", "Ethernet y PPP", "HTTP, SMTP y FTP"],"D","OSI","specific"],["En ITIL 4, el SVS significa...",["System Value Service", "Service Visual Scheme", "Service Value System", "Service Validation Stack"],"C","ITIL","specific"],["En COBIT 2019, gobierno y gestión son...",["Sin relación", "Distintos", "Iguales", "Incompatibles"],"B","COBIT","specific"],["En Metrica v3, la construcción corresponde a...",["DSI y CSI", "PSI y EVS", "IAS y MSI", "Solo PSI"],"A","Metrica","specific"],["En el modelo CAP se garantizan como máximo...",["Tres siempre", "Solo consistencia", "Solo disponibilidad", "Dos de Consistencia, Disponibilidad y Tolerancia al particionamiento"],"D","CAP","specific"],["En sistemas Linux, /etc contiene...",["Ficheros temporales", "Logs de red", "Ficheros de configuración del sistema", "Librerías ejecutables"],"C","Linux","specific"],["El motor de renderizado de Firefox es...",["Trident", "Gecko", "Blink", "WebKit"],"B","Web","specific"],["La red SARA conecta...",["Las redes de las Administraciones Públicas Españolas e Instituciones Europeas", "Solo ministerios", "Solo universidades", "Solo ayuntamientos"],"A","Red SARA","specific"],["El protocolo NAT descrito en RFC 3022 se refiere a...",["Resolución de nombres", "Transporte de audio", "Direccionamiento IPv6", "Traducción de direcciones de red"],"D","Redes","specific"],["MIB en SNMP sirve para...",["Balancear tráfico", "Eliminar paquetes defectuosos", "Almacenar y organizar parámetros de gestión", "Cifrar mensajes"],"C","SNMP","specific"],["En redes, un MIB se consulta normalmente con...",["SSH", "SNMP", "SMTP", "NTP"],"B","SNMP","specific"],["El patrón MVC separa...",["Modelo, vista y controlador", "Monitor, vista y código", "Módulo, vector y cadena", "Mapa, validación y control"],"A","Patrones","specific"],["La cohesión mide...",["La distancia entre clases", "La velocidad de compilación", "La cantidad de líneas de código", "La relación entre datos y métodos internos de un módulo"],"D","Calidad","specific"],["El comando Git para mover archivos al área de preparación es...",["git push", "git fetch", "git add", "git commit"],"C","Git","specific"],["La regla de negocio y la interfaz suelen separarse en...",["NAT", "MVC", "FTP", "DNS"],"B","Patrones","specific"],["En BPMN, los elementos principales incluyen...",["Objetos de flujo, objetos de conexión, carriles y artefactos", "Clases, paquetes y componentes", "Tablas, filas y columnas", "Nodos, aristas y pesos"],"A","BPMN","specific"],["La tabla intermedia en una relación M:N contiene...",["Solo una clave foránea", "Solo atributos multivaluados", "Solo índices", "Las claves primarias de ambas entidades"],"D","BD","specific"],["En TCP, el handshake es...",["RST, ACK, PSH", "SYN, ACK, FIN", "SYN, SYN-ACK, ACK", "ACK, FIN, SYN"],"C","Redes","specific"],["La autenticación fuerte combina...",["Solo biometría siempre", "Dos o más factores de distinta naturaleza", "Solo usuario y contraseña", "Solo un token"],"B","Seguridad","specific"],["Un firewall UTM integra...",["Varias funciones de seguridad en un solo dispositivo", "Solo VPN", "Solo IDS", "Solo proxy HTTP"],"A","Seguridad","specific"],["En SAN, LUN significa...",["Local User Node", "Link Utility Network", "Logical Usage Name", "Logical Unit Number"],"D","SAN","specific"],["En Hadoop o Spark, un Data Lake se usa para...",["Solo copias de seguridad", "Solo métricas agregadas", "Almacenar datos en formato original y heterogéneo", "Solo datos tabulares"],"C","Big Data","specific"],["En UML, un diagrama de casos de uso describe...",["Rutas de despliegue", "Interacción entre actores y sistema", "Estructura física", "Clases de implementación"],"B","UML","specific"],["La latencia se reduce con edge computing porque...",["La computación se acerca a la fuente de datos", "Se centraliza la infraestructura", "Se eliminan las redes", "Se usan más servidores remotos"],"A","Edge","specific"],["En un SGBD, una transacción ACID es atómica cuando...",["Se puede ejecutar parcialmente", "Solo si hay commit manual", "Depende del índice", "Todo o nada"],"D","BD","specific"],["En redes, un gateway H.323 conecta...",["Solo FTP", "Solo SNMP", "H.323 con PSTN o SIP", "Solo VLAN internas"],"C","Teleco","specific"],["En redes, una API REST usa normalmente...",["Solo SMTP", "HTTP GET, POST, PUT y DELETE", "Solo FTP", "Solo ICMP"],"B","REST","specific"],["En un plan de continuidad, MTD significa...",["Maximum Tolerable Downtime", "Minimum Time to Deploy", "Mean Time to Diagnose", "Managed Transfer Delay"],"A","Continuidad","specific"],["El comando para vaciar una tabla sin borrar su estructura es...",["DROP", "MERGE", "ALTER", "TRUNCATE"],"D","SQL","specific"],["En una dirección IPv6, se representan 8 grupos de 4 dígitos hexadecimales.",["Solo 6 grupos", "Solo 4 grupos", "Verdadero", "Falso"],"C","IPv6","specific"],["En una red IP, ARP sirve para...",["Crear VLAN", "Relacionar IP con MAC", "Resolver nombres DNS", "Asignar máscara"],"B","Redes","specific"],["En gestión de proyectos, PERT y CPM se usan para...",["Planificar y controlar actividades", "Gestionar usuarios", "Firmar documentos", "Monitorizar red"],"A","Gestión","specific"]];let exam=[],idx=0;function pick(pool,n,cat,used){const out=[];for(const item of pool.slice().sort(()=>Math.random()-0.5)){if(out.length>=n)break;if(used.has(item[0]))continue;used.add(item[0]);out.push({text:item[0],options:item[1],answer:item[2],category:cat,topic:item[3],selected:null});}return out;}function buildExam(){const used=new Set();return [...pick(generalPool,30,'general',used),...pick(specificPool,70,'specific',used)].sort(()=>Math.random()-0.5);}function render(){const c=document.getElementById('content');if(!exam.length){c.innerHTML='';document.getElementById('score').textContent='';return;}const q=exam[idx];const answered=exam.filter(x=>x.selected).length;const correct=exam.filter(x=>x.selected&&x.selected===x.answer).length;const score=Math.max(0,(correct-(answered-correct)/3)*0.5).toFixed(2);document.getElementById('status').textContent='Pregunta '+(idx+1)+' de '+exam.length+' • Respondidas '+answered+'/100 • '+(q.category==='general'?'General':'Específica');document.getElementById('score').textContent='Aciertos: '+correct+' | Fallos: '+(answered-correct)+' | Nota/50: '+score;c.innerHTML="<div class='q'><div class='meta'>Tema: "+q.topic+"</div><div style='font-size:28px;line-height:1.35;margin-bottom:18px'>"+q.text+"</div>"+q.options.map(function(o,i){var k=String.fromCharCode(65+i);var cls=q.selected===k?(k===q.answer?'correct':'wrong'):'';return "<div class='opt "+cls+"' data-k='"+k+"'><div class='b'>"+k+"</div><div>"+o+"</div></div>";}).join('')+"</div>";c.querySelectorAll('.opt').forEach(function(el){el.onclick=function(){q.selected=el.dataset.k;render();};});}
-document.getElementById('generate').onclick=function(){exam=buildExam();idx=0;render();};document.getElementById('next').onclick=function(){if(exam.length){idx=Math.min(idx+1,exam.length-1);render();}};document.getElementById('prev').onclick=function(){if(exam.length){idx=Math.max(idx-1,0);render();}};document.getElementById('blank').onclick=function(){if(exam.length){exam[idx].selected=null;render();}};</script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Examen - Cuerpo GSI Estado</title>
+    <meta name="description" content="Simulador inteligente y premium de exámenes tipo test oficiales para el Cuerpo de Gestión de Sistemas e Informática (GSI) de la Administración General del Estado.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- HEADER PRINCIPAL -->
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-network-wired" style="color: white; font-size: 24px;"></i>
+                </div>
+                <div>
+                    <h1>Simulador GSI Estado</h1>
+                    <p>Preparación Oficial - Gestión de Sistemas e Informática</p>
+                </div>
+            </div>
+            
+            <div class="header-controls">
+                <!-- Selector de Modo Examen vs Práctica -->
+                <div class="mode-toggle" id="mode-toggle">
+                    <button class="mode-btn active" id="mode-examen-btn">
+                        <i class="fas fa-graduation-cap"></i> Modo Examen
+                    </button>
+                    <button class="mode-btn" id="mode-practica-btn">
+                        <i class="fas fa-dumbbell"></i> Modo Práctica
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- PANEL DE CONTENIDO PRINCIPAL -->
+        <main>
+            
+            <!-- CUADRO DE MANDOS DEL PROGRESO (DASHBOARD) -->
+            <div class="dashboard-grid">
+                
+                <!-- Progreso Total -->
+                <div class="stat-card" id="stat-progress-card">
+                    <div class="stat-header">
+                        <span>Preguntas Respondidas</span>
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-value" id="dashboard-answered">0 / 100</div>
+                    <div class="stat-progress-bar">
+                        <div class="stat-progress" id="dashboard-progress-bar"></div>
+                    </div>
+                    <div class="stat-footer">Meta: Completar 100 preguntas</div>
+                </div>
+
+                <!-- Bloque General (30%) -->
+                <div class="stat-card" id="stat-general-card">
+                    <div class="stat-header">
+                        <span>Temas Generales (30%)</span>
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="stat-value" id="dashboard-general">0 / 30</div>
+                    <div class="stat-progress-bar">
+                        <div class="stat-progress" id="dashboard-progress-gen"></div>
+                    </div>
+                    <div class="stat-footer">Bloque I (Constitucional y Admin)</div>
+                </div>
+
+                <!-- Bloque Específico (70%) -->
+                <div class="stat-card" id="stat-specific-card">
+                    <div class="stat-header">
+                        <span>Temas Específicos (70%)</span>
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="stat-value" id="dashboard-specific">0 / 70</div>
+                    <div class="stat-progress-bar">
+                        <div class="stat-progress specific" id="dashboard-progress-spec"></div>
+                    </div>
+                    <div class="stat-footer">Bloques II, III y IV (Tecnología y Redes)</div>
+                </div>
+
+                <!-- Temporizador / Calificación -->
+                <div class="stat-card timer-card" id="timer-container">
+                    <div class="stat-header">
+                        <span>Tiempo Restante</span>
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="stat-value timer-value" id="timer-value">100:00</div>
+                    <div class="stat-progress-bar" style="background: rgba(245, 158, 11, 0.1);">
+                        <div class="stat-progress" style="width: 100%; background: var(--warning-gradient);"></div>
+                    </div>
+                    <div class="stat-footer">Examen de 100 minutos oficiales</div>
+                </div>
+
+                <!-- Nota en Vivo / Calificación Reciente -->
+                <div class="stat-card" id="stat-score-card">
+                    <div class="stat-header">
+                        <span id="dashboard-score-label">Calificación</span>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value" id="dashboard-score-val">--</div>
+                    <div class="stat-progress-bar">
+                        <div class="stat-progress" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%);"></div>
+                    </div>
+                    <div class="stat-footer">Suma 1.0, resta 0.33</div>
+                </div>
+
+            </div>
+
+            <!-- BARRA DE ACCIONES PRINCIPALES -->
+            <div class="actions-bar">
+                <button class="btn btn-outline" id="reset-btn">
+                    <i class="fas fa-trash-alt"></i> Limpiar Examen
+                </button>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="regenerate-btn">
+                        <i class="fas fa-redo-alt"></i> Regenerar Test (Nuevas 100)
+                    </button>
+                    <button class="btn btn-primary" id="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Entregar y Corregir
+                    </button>
+                </div>
+            </div>
+
+            <!-- LISTADO DINÁMICO DE PREGUNTAS -->
+            <div class="questions-container" id="questions-list">
+                <!-- Se inyecta dinámicamente con JavaScript -->
+            </div>
+
+        </main>
+
+        <!-- PANEL DE NAVEGACIÓN LATERAL (ASIDE) -->
+        <aside class="side-panel">
+            
+            <!-- Cuadrícula de Navegación Rápida -->
+            <div class="grid-card">
+                <h3><i class="fas fa-th"></i> Navegación Rápida</h3>
+                
+                <div class="q-grid" id="questions-grid">
+                    <!-- Se inyecta dinámicamente -->
+                </div>
+                
+                <div class="grid-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);"></div>
+                        <span>Sin responder</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(99, 102, 241, 0.25); border: 1px solid #6366f1;"></div>
+                        <span>Respondida</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981;"></div>
+                        <span>Correcta</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444;"></div>
+                        <span>Incorrecta</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guía de Criterios Oficiales de las Bases -->
+            <div class="guide-card">
+                <h3><i class="fas fa-info-circle"></i> Criterios de Evaluación</h3>
+                <ul>
+                    <li>
+                        <i class="fas fa-check-circle text-success"></i>
+                        <div><strong>Preguntas Oficiales:</strong> Consta de 100 preguntas elegidas aleatoriamente de exámenes oficiales reales.</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-divide text-info"></i>
+                        <div><strong>Pesos del Examen:</strong> Respeta exactamente los criterios oficiales: 30 de bloque general (30%) y 70 de bloque específico (70%).</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-star text-warning"></i>
+                        <div><strong>Preguntas Repetidas:</strong> Las preguntas que se han repetido en varios años llevan el distintivo de <span class="badge badge-important" style="display:inline-block; transform: scale(0.9); vertical-align:middle; padding: 2px 6px;">Pregunta Frecuente</span>.</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-plus text-success"></i>
+                        <div><strong>Aciertos:</strong> Cada respuesta correcta añade <strong>+1 punto</strong>.</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-minus text-error"></i>
+                        <div><strong>Errores:</strong> Cada respuesta fallada penaliza restando <strong>-0.33 puntos</strong> (1/3). Las en blanco no penalizan.</div>
+                    </li>
+                    <li>
+                        <i class="fas fa-trophy text-warning"></i>
+                        <div><strong>Aprobado:</strong> Se requiere alcanzar un mínimo de <strong>50 puntos netos</strong> (Nota final 5.0) para aprobar.</div>
+                    </li>
+                </ul>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- MODAL DE RESULTADOS -->
+    <div class="results-modal-overlay" id="results-modal">
+        <div class="results-modal-content">
+            <h2 class="results-title">Resultado de la Simulación</h2>
+            
+            <!-- Gráfico Circular de Progreso de la Nota -->
+            <div class="score-circle-container">
+                <svg class="score-svg" viewBox="0 0 160 160">
+                    <defs>
+                        <linearGradient id="score-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6366f1" />
+                            <stop offset="50%" stop-color="#a855f7" />
+                            <stop offset="100%" stop-color="#10b981" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="score-svg-bg" cx="80" cy="80" r="70" />
+                    <circle class="score-svg-progress" id="modal-circle-progress" cx="80" cy="80" r="70" />
+                </svg>
+                <div class="score-text-container">
+                    <div class="score-grade" id="modal-score-grade">0.0</div>
+                    <div class="score-label">Nota Final</div>
+                </div>
+            </div>
+
+            <!-- Insignia de Aprobado / Suspenso -->
+            <div class="results-badge" id="modal-status-badge">---</div>
+
+            <!-- Desglose de Estadísticas -->
+            <div class="results-grid">
+                <div class="result-stat-item">
+                    <div class="result-stat-label">Correctas</div>
+                    <div class="result-stat-value text-success" id="modal-stat-correct">0</div>
+                </div>
+                <div class="result-stat-item">
+                    <div class="result-stat-label">Incorrectas</div>
+                    <div class="result-stat-value text-error" id="modal-stat-incorrect">0</div>
+                </div>
+                <div class="result-stat-item">
+                    <div class="result-stat-label">Puntos Netos</div>
+                    <div class="result-stat-value text-warning" id="modal-stat-score">0.0</div>
+                </div>
+            </div>
+
+            <!-- Botones del Modal -->
+            <div class="modal-buttons">
+                <button class="btn btn-outline" id="modal-review-btn">
+                    <i class="fas fa-search"></i> Revisar Errores
+                </button>
+                <button class="btn btn-primary" id="modal-new-btn">
+                    <i class="fas fa-redo-alt"></i> Nuevo Examen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST DE NOTIFICACIONES FLOTANTES -->
+    <div class="toast" id="toast-notification">
+        <i class="fas fa-info-circle"></i>
+        <span>Mensaje flotante de prueba</span>
+    </div>
+
+    <!-- IMPORTACIÓN DE LA BASE DE DATOS Y DEL ENGINE DE LA APP -->
+    <script src="questions_db.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
